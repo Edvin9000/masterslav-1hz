@@ -1,97 +1,19 @@
 <!doctype html>
-<html lang="sv">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b1020">
-  <title>Masterslav D-vippa · 1 Hz</title>
-  <meta name="description" content="Interaktiv masterslav D-vippa med 1 Hz klocka och fallande klockflank.">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main class="shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">DIGITALTEKNIK / INTERAKTIV LABORATION</p>
-        <h1>Masterslav D-vippa</h1>
-        <p class="subtitle">1 Hz · fallande klockflank</p>
-      </div>
-      <button id="fullscreenBtn" class="ghost">Helskärm ↗</button>
-    </header>
-
-    <section class="controls card" aria-label="Kontroller">
-      <button id="dataBtn" class="signal-control">
-        <span>DATA</span><strong>D = <b id="dText">L</b></strong><small>Klicka för H/L</small>
-      </button>
-      <button id="clockBtn" class="signal-control">
-        <span>KLOCKA</span><strong>CLK = <b id="clkText">L</b></strong><small>Växla halvperiod</small>
-      </button>
-      <button id="cycleBtn" class="action">En klockcykel · 1 s</button>
-      <button id="autoBtn" class="action">▶ Automatisk klocka · 1 Hz</button>
-      <button id="resetBtn" class="ghost">Ladda startläge</button>
-    </section>
-
-    <div class="hint">1 Hz = 1 period/s · 0,5 s hög + 0,5 s låg</div>
-
-    <section class="card circuit-card">
-      <div class="section-head">
-        <div><p class="eyebrow">KOPPLING</p><h2>8 NAND + klockinverterare</h2></div>
-        <div class="legend"><span><i class="dot high"></i>H = 1</span><span><i class="dot low"></i>L = 0</span></div>
-      </div>
-
-      <div class="circuit-grid">
-        <article class="latch master">
-          <div class="latch-head"><h3>MASTER</h3><span id="masterState" class="phase">Stängd · håller</span></div>
-          <div class="gate-row"><div class="gate">&<small>M1</small></div><div class="gate">&<small>M2</small></div><div class="gate">&<small>M3</small></div><div class="gate">&<small>M4</small></div></div>
-          <div class="signals">
-            <div><span>D</span><b id="mD">L</b></div>
-            <div><span>CLK</span><b id="mClk">L</b></div>
-            <div><span>S̅m</span><b id="sM">H</b></div>
-            <div><span>R̅m</span><b id="rM">H</b></div>
-            <div class="output"><span>Qm</span><b id="qM">L</b></div>
-          </div>
-          <div class="flow"><span>D</span><i></i><span>M1/M2</span><i></i><span>M3/M4</span><i></i><strong>Qm</strong></div>
-        </article>
-
-        <article class="inverter">
-          <div class="not-box">NOT</div>
-          <div class="signals compact">
-            <div><span>CLK</span><b id="invClk">L</b></div>
-            <div><span>¬CLK</span><b id="notClk">H</b></div>
-          </div>
-          <div class="arrow">→</div>
-        </article>
-
-        <article class="latch slave">
-          <div class="latch-head"><h3>SLAVE</h3><span id="slaveState" class="phase active">Öppen · läser master</span></div>
-          <div class="gate-row"><div class="gate">&<small>S1</small></div><div class="gate">&<small>S2</small></div><div class="gate">&<small>S3</small></div><div class="gate">&<small>S4</small></div></div>
-          <div class="signals">
-            <div><span>Qm</span><b id="sIn">L</b></div>
-            <div><span>¬CLK</span><b id="sEnable">H</b></div>
-            <div><span>S̅s</span><b id="sS">H</b></div>
-            <div><span>R̅s</span><b id="rS">H</b></div>
-            <div class="output"><span>Qs</span><b id="qS">L</b></div>
-          </div>
-          <div class="flow"><span>Qm</span><i></i><span>S1/S2</span><i></i><span>S3/S4</span><i></i><strong>Qs</strong></div>
-        </article>
-      </div>
-
-      <div class="explanation">
-        <strong id="summaryTitle">Slave visar det lagrade värdet</strong>
-        <p id="summaryText">CLK är L: master håller Qm och slave läser Qm. Ändringar av D påverkar inte master förrän klockan går hög.</p>
-      </div>
-    </section>
-
-    <section class="card history-card">
-      <div class="section-head">
-        <div><p class="eyebrow">SIGNALHISTORIK</p><h2>Senaste 24 händelserna</h2></div>
-        <span class="muted">D · CLK · Qm · Qs</span>
-      </div>
-      <div class="timeline-wrap"><svg id="timeline" role="img" aria-label="Tidsdiagram för D, CLK, Qm och Qs"></svg></div>
-    </section>
-
-    <footer>Masterslav D-vippa · interaktiv 1 Hz-demonstration</footer>
-  </main>
-  <script src="app.js"></script>
-</body>
-</html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Masterslav D-vippa · 1 Hz</title><meta name="description" content="Utforska en masterslav D-vippa byggd med åtta NAND-grindar. Klocka 1 Hz och interaktiva signaler."><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1927'/%3E%3Cpath d='M4 22h7V10h10v12h7' fill='none' stroke='%2356dded' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="style.css"></head>
+<body><main>
+<header><div><p class="eyebrow">DIGITALTEKNIK / INTERAKTIV LABORATION</p><h1>Masterslav D-vippa <span>1 Hz · fallande klockflank</span></h1></div><button id="full" class="quiet" aria-label="Visa i helskärm">Helskärm ↗</button></header>
+<section class="controls" aria-label="Kretskontroller">
+<button id="data" class="toggle" aria-pressed="false"><span>DATA</span><strong>D = L</strong><small>Klicka för H</small></button>
+<button id="clock" class="toggle" aria-pressed="false"><span>KLOCKA</span><strong>CLK = L</strong><small>Växla halvperiod</small></button>
+<div class="playback"><button id="cycle">En klockcykel · 1 s</button><button id="auto" aria-pressed="false">▶ Automatisk klocka · 1 Hz</button><span>1 Hz = 1 period/s · 0,5 s hög + 0,5 s låg</span></div>
+<button id="init" class="quiet">Ladda startläge</button>
+</section>
+<section class="diagram-panel" aria-label="Interaktivt kopplingsschema">
+<div class="diagram-top"><span>Ny koppling · 8 NAND + klockinverterare</span><div class="legend"><span class="high">H = 1</span><span class="low">L = 0</span><span class="unknown">X = osäkert</span></div></div>
+<div class="diagram-scroll"><svg id="circuit" viewBox="0 0 1280 480" role="img" aria-label="Två D-latchar med NAND-grindar. I varje latch går den övre ingångsgrindens utgång till den undre ingångsgrinden. Qm går till slave. Slave får inverterad klocka."></svg></div>
+<div class="phase-labels"><div><b>MASTER</b><span id="masterState"></span></div><div><b>SLAVE</b><span id="slaveState"></span></div></div>
+</section>
+<section class="explanation" aria-live="polite"><div id="status">Startläge</div><p id="detail"></p></section>
+<section class="timing"><div class="timing-title"><h2>Signalhistorik</h2><span>Senaste 24 händelserna · ett steg per ändring · X visas streckat</span></div><svg id="timing" role="img" aria-label="Stegdiagram för D, CLK, Qm och Qs"></svg></section>
+<footer><details><summary>Koppling, klocka och startläge</summary><p>Detta är en ideal digital modell av den nya Falstad-exportens koppling. Master: S̅m = NAND(D, CLK) och R̅m = NAND(S̅m, CLK). Slave: S̅s = NAND(Qm, ¬CLK) och R̅s = NAND(S̅s, ¬CLK). Det behövs ingen separat D-inverterare. Latcharnas komplementära utgångar används internt i återkopplingen men visas inte som separata signaler.</p><p>När master är öppen följer Qm D. Vid fallande klockflank stänger master och slave öppnar. Båda aktiva låga styringångarna blir aldrig L samtidigt i modellens stabila logik.</p><p>Klockan är inställd på 1 Hz med 50 % pulskvot, enligt önskemålet. Exportens 120 Hz används inte. Automatisk klockning växlar fas var 500 ms. En klockcykel gör två fasväxlingar på totalt 1 sekund. Manuell CLK styr du själv. Webbläsarens tidtagning är ungefärlig; klockan pausas när fliken döljs.</p><p>Startläget antar D = CLK = Qm = Qs = L, i linje med exportens lagrade utgångar. ”Ladda startläge” återställer demonstrationen och historiken, inte en fysisk reset-ingång. Historiken visar händelsesteg, inte en linjär tidsaxel.</p><p>Grindfördröjningar, transienter, kontaktstuds och analog metastabilitet simuleras inte. Den fysiska kretsen kräver stabila insignaler kring klockflanken. Vid samtidiga ändringar använder modellen nya D före den nya klockfasen. Korsande ledningar utan anslutningspunkt är inte ihopkopplade. X betecknar ett logiskt osäkert värde, inte en tredje spänningsnivå.</p></details><span id="fullscreenError" role="status"></span></footer>
+</main><script type="module" src="app.mjs"></script></body></html>
