@@ -5,7 +5,7 @@ export function circuitMarkup(){
   const dot=(x,y,s)=>out.push(`<circle cx="${x}" cy="${y}" r="4" class="junction" data-signal="${s}"/>`);
   const text=(x,y,t,c='svg-label',anchor='start')=>out.push(`<text x="${x}" y="${y}" class="${c}" text-anchor="${anchor}">${t}</text>`);
   const value=(x,y,t,s)=>{text(x,y,t);out.push(`<text x="${x+(t==='¬CLK'?72:54)}" y="${y}" class="signal-value" data-signal="${s}"></text>`);};
-  const gate=(x,y,id,group)=>out.push(`<g class="gate" data-group="${group}"><path d="M${x} ${y-32} H${x+38} C${x+82} ${y-32} ${x+82} ${y+32} ${x+38} ${y+32} H${x} Z" class="gate-shape"/><circle cx="${x+74}" cy="${y}" r="6" class="gate-shape"/><text x="${x+31}" y="${y+7}" class="gate-label"></text><text x="${x+34}" y="${y-48}" class="gate-id" text-anchor="middle">${id}</text></g>`);
+  const gate=(x,y,id,group)=>out.push(`<g class="gate" data-group="${group}"><path d="M${x} ${y-32} H${x+38} C${x+82} ${y-32} ${x+82} ${y+32} ${x+38} ${y+32} H${x} Z" class="gate-shape"/><circle cx="${x+74}" cy="${y}" r="6" class="gate-shape"/><text x="${x+31}" y="${y+7}" class="gate-label">${id}</text></g>`);
   out.push('<path d="M640 62 V350" class="stage-divider"/>');
   for(const [dx,prefix,input,clock,s,r,q,qb]of [[0,'M','d','clk','sm','rm','qm','qmb'],[640,'S','qm','clkb','ss','rs','qs','qsb']]){
     out.push(`<g transform="translate(${dx} 0)" class="latch-stage">`);
