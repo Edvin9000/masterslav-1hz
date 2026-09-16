@@ -27,8 +27,8 @@ Pinned controls and signal history follow the JK-vippa interface. Drag either pa
 | Key | Action |
 | --- | --- |
 | D | Toggle data |
-| L | Toggle CLK by one half-period |
-| C | Run one complete 1 Hz cycle |
+| C | Toggle CLK by one half-period |
+| S | Run one complete 1 Hz cycle |
 | A | Start/pause automatic 1 Hz clock |
 | R | Reload the starting state and clear history |
 | F | Toggle fullscreen |

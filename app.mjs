@@ -107,7 +107,7 @@ document.addEventListener('keydown',event=>{
   if(event.repeat||event.ctrlKey||event.metaKey||event.altKey||event.isComposing)return;
   const target=event.target;
   if(target?.isContentEditable||target?.closest?.('textarea,select,input'))return;
-  const controls={d:'data',l:'clock',c:'cycle',a:'auto',r:'init',f:'full',t:'toggleTop',b:'toggleBottom'};
+  const controls={d:'data',c:'clock',s:'cycle',a:'auto',r:'init',f:'full',t:'toggleTop',b:'toggleBottom'};
   const control=$(controls[event.key.toLowerCase()]);
   if(!control||control.disabled||control.hidden)return;
   event.preventDefault();
