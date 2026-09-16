@@ -18,6 +18,11 @@ $('slaveState').textContent=s.clk?'Stängd · håller':'Öppen · läser master'
 document.querySelector('.explanation').className='explanation';
 $('status').textContent=s.clk?'Master läser in data':'Slave visar det lagrade värdet';
 $('detail').textContent=s.clk?`CLK är H: Qm följer D (${HL(s.d)}). Slave är stängd och håller Qs = ${HL(s.qs)}. Prova att växla D nu och sänk sedan CLK för att överföra värdet.`:`CLK är L: master håller Qm = ${HL(s.qm)} och slave visar Qs = ${HL(s.qs)}. Ändringar av D påverkar inte de lagrade utgångarna i den här fasen. Qs kan uppdateras vid nästa fallande klockflank.`;
+document.querySelectorAll('#phaseTable tbody tr').forEach(row=>{
+const selected=Number(row.dataset.clk)===s.clk&&Number(row.dataset.d)===s.d;
+row.classList.toggle('selected',selected);
+if(selected)row.setAttribute('aria-current','true');else row.removeAttribute('aria-current');
+});
 drawHistory();}
 function drawHistory(){let t=$('timing'),w=Math.max(300,t.clientWidth),h=180;t.replaceChildren();t.setAttribute('viewBox',`0 0 ${w} ${h}`);const left=65,right=w-20,slot=(right-left)/24;const names=[['D','d'],['CLK','clk'],['Qm','qm'],['Qs','qs']];const colors={1:'#ff3b30',0:'#8497ad',X:'#ffc471'};
 for(let j=0;j<names.length;j++){let y=12+j*36;t.append(el('text',{x:0,y:y+12,fill:'#b7cad8','font-size':14},names[j][0]));t.append(el('line',{x1:left,y1:y+18,x2:right,y2:y+18,stroke:'#24394b'}));history.forEach((entry,i)=>{let v=entry[names[j][1]],x=left+i*slot,yy=y+(v==='X'?9:v?0:18);t.append(el('line',{x1:x,y1:yy,x2:x+slot,y2:yy,stroke:colors[v],'stroke-width':2.5,...(v==='X'?{'stroke-dasharray':'4 3'}:{})}));if(i>0){let pv=history[i-1][names[j][1]],py=y+(pv==='X'?9:pv?0:18);if(pv!=='X'&&v!=='X'&&pv!==v)t.append(el('line',{x1:x,y1:py,x2:x,y2:yy,stroke:colors[v],'stroke-width':2}));}if(v==='X'&&slot>25)t.append(el('text',{x:x+slot/2,y:y+5,fill:colors.X,'font-size':11,'text-anchor':'middle'},'X'));});}

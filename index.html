@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Masterslav D-vippa · 1 Hz</title><meta name="description" content="Utforska en masterslav D-vippa byggd med åtta NAND-grindar. Klocka 1 Hz och interaktiva signaler."><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1927'/%3E%3Cpath d='M4 22h7V10h10v12h7' fill='none' stroke='%2356dded' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="style.css?v=jk-ui-1"></head>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Masterslav D-vippa · 1 Hz</title><meta name="description" content="Utforska en masterslav D-vippa byggd med åtta NAND-grindar. Klocka 1 Hz och interaktiva signaler."><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1927'/%3E%3Cpath d='M4 22h7V10h10v12h7' fill='none' stroke='%2356dded' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="style.css?v=truth-1"></head>
 <body><main>
 <div id="topPanel" class="frozen-controls" role="region" aria-label="Fasta kontroller"><div id="topBody" class="panel-body"><div class="panel-content">
 <header><div><p class="eyebrow">DIGITALTEKNIK / INTERAKTIV LABORATION</p><h1>Masterslav D-vippa <span>1 Hz · fallande klockflank</span></h1></div><button id="full" aria-keyshortcuts="F" class="quiet" aria-label="Visa i helskärm">Helskärm ↗ <kbd>F</kbd></button></header>
@@ -15,5 +15,34 @@
 <div class="phase-labels"><div><b>MASTER</b><span id="masterState"></span></div><div><b>SLAVE</b><span id="slaveState"></span></div></div>
 </section>
 <section class="explanation" aria-live="polite"><div id="status">Startläge</div><p id="detail"></p></section>
+
+<section class="study-grid" aria-label="Sanningstabeller">
+<section class="truth-card" aria-labelledby="phaseTitle">
+<h2 id="phaseTitle">Sanningstabell · master och slave</h2>
+<p>Markerad rad visar aktuella D och CLK. H = 1, L = 0.</p>
+<table id="phaseTable">
+<thead><tr><th scope="col">CLK</th><th scope="col">D</th><th scope="col">Qm</th><th scope="col">Qs</th></tr></thead>
+<tbody>
+<tr data-clk="0" data-d="0"><td>L</td><td>L</td><td>Håller</td><td>Qm</td></tr>
+<tr data-clk="0" data-d="1"><td>L</td><td>H</td><td>Håller</td><td>Qm</td></tr>
+<tr data-clk="1" data-d="0"><td>H</td><td>L</td><td>L</td><td>Håller</td></tr>
+<tr data-clk="1" data-d="1"><td>H</td><td>H</td><td>H</td><td>Håller</td></tr>
+</tbody></table>
+<p>När CLK = H följer master D och slave håller. När CLK = L håller master och slave följer det lagrade Qm.</p>
+</section>
+<section class="truth-card" aria-labelledby="edgeTitle">
+<h2 id="edgeTitle">Sanningstabell · fallande klockflank</h2>
+<p>Vippans utgång Qs lagrar D vid övergången H → L.</p>
+<table>
+<thead><tr><th scope="col">CLK</th><th scope="col">D</th><th scope="col">Qs efter</th><th scope="col">Funktion</th></tr></thead>
+<tbody>
+<tr><td>↓ H → L</td><td>L</td><td>L</td><td>Lagrar 0</td></tr>
+<tr><td>↓ H → L</td><td>H</td><td>H</td><td>Lagrar 1</td></tr>
+<tr><td>↑ L → H</td><td>–</td><td>Qs före</td><td>Håller</td></tr>
+<tr><td>Oförändrad</td><td>–</td><td>Qs före</td><td>Håller</td></tr>
+</tbody></table>
+<p>– betyder valfritt D, inte osäkert X. D ska vara stabil kring den fallande flanken. Tabellen gäller ideal, stabil logik.</p>
+</section>
+</section>
 <footer><details><summary>Koppling, klocka och startläge</summary><p>Detta är en ideal digital modell. Master: S̅m = NAND(D, CLK) och R̅m = NAND(S̅m, CLK). Slave: S̅s = NAND(Qm, ¬CLK) och R̅s = NAND(S̅s, ¬CLK). Latcharnas komplementära utgångar används internt i återkopplingen men visas inte som separata signaler.</p><p>När master är öppen följer Qm D. Vid fallande klockflank stänger master och slave öppnar. Båda aktiva låga styringångarna blir aldrig L samtidigt i modellens stabila logik.</p><p>Klockan är inställd på 1 Hz med 50 % pulskvot. Automatisk klockning växlar fas var 500 ms. En klockcykel gör två fasväxlingar på totalt 1 sekund. Manuell CLK styr du själv. Webbläsarens tidtagning är ungefärlig; klockan pausas när fliken döljs.</p><p>Startläget antar D = CLK = Qm = Qs = L, i linje med exportens lagrade utgångar. ”Ladda startläge” återställer demonstrationen och historiken, inte en fysisk reset-ingång. Historiken visar händelsesteg, inte en linjär tidsaxel.</p><p>Grindfördröjningar, transienter, kontaktstuds och analog metastabilitet simuleras inte. Den fysiska kretsen kräver stabila insignaler kring klockflanken. Vid samtidiga ändringar använder modellen nya D före den nya klockfasen. Korsande ledningar utan anslutningspunkt är inte ihopkopplade. X betecknar ett logiskt osäkert värde, inte en tredje spänningsnivå.</p></details><span id="fullscreenError" role="status"></span></footer>
-</main><aside id="bottomPanel" class="frozen-timeline" aria-label="Fast tidsdiagram"><div class="panel-grip"><div class="drag-handle" role="separator" aria-label="Tidsdiagrammets höjd" aria-controls="bottomBody" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" tabindex="0">Dra för att ändra höjd</div><button id="toggleBottom" aria-controls="bottomBody" aria-expanded="true" aria-keyshortcuts="B">Dölj <kbd>B</kbd></button></div><div id="bottomBody" class="panel-body"><section class="timing panel-content"><div class="timing-title"><h2>Signalhistorik</h2><span>Senaste 24 händelserna · ett steg per ändring · X visas streckat</span></div><svg id="timing" role="img" aria-label="Stegdiagram för D, CLK, Qm och Qs"></svg></section></div></aside><script type="module" src="app.mjs?v=jk-ui-1"></script></body></html>
+</main><aside id="bottomPanel" class="frozen-timeline" aria-label="Fast tidsdiagram"><div class="panel-grip"><div class="drag-handle" role="separator" aria-label="Tidsdiagrammets höjd" aria-controls="bottomBody" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" tabindex="0">Dra för att ändra höjd</div><button id="toggleBottom" aria-controls="bottomBody" aria-expanded="true" aria-keyshortcuts="B">Dölj <kbd>B</kbd></button></div><div id="bottomBody" class="panel-body"><section class="timing panel-content"><div class="timing-title"><h2>Signalhistorik</h2><span>Senaste 24 händelserna · ett steg per ändring · X visas streckat</span></div><svg id="timing" role="img" aria-label="Stegdiagram för D, CLK, Qm och Qs"></svg></section></div></aside><script type="module" src="app.mjs?v=truth-1"></script></body></html>
