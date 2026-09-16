@@ -19,3 +19,20 @@ GitHub Pages serves the repository root with `.nojekyll`. No dependencies or bui
 Run `node test-model.mjs` for gate equations, latch behavior and clock timing checks. To view locally, serve this directory with a static HTTP server (for example `python -m http.server 8000`), since the app uses JavaScript modules.
 
 The model assumes ideal settled logic and does not simulate propagation delay, contact bounce or analog metastability.
+
+## Interface and keyboard shortcuts
+
+Pinned controls and signal history follow the JK-vippa interface. Drag either panel's separator to adjust its height, or focus the separator and use the up/down arrow keys. HIGH circuit paths and timeline segments are red; cyan remains the interface accent.
+
+| Key | Action |
+| --- | --- |
+| D | Toggle data |
+| L | Toggle CLK by one half-period |
+| C | Run one complete 1 Hz cycle |
+| A | Start/pause automatic 1 Hz clock |
+| R | Reload the starting state and clear history |
+| F | Toggle fullscreen |
+| T | Show/hide top controls |
+| B | Show/hide bottom timeline |
+
+Shortcuts ignore key repeat, text entry, and Ctrl/Alt/Command combinations. Manual clock actions remain disabled while clocking. Panel changes do not affect circuit state. The logic, 500 ms half-period, circuit geometry, and four history signals (D, CLK, Qm, Qs) are unchanged.
