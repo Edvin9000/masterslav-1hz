@@ -58,3 +58,9 @@ button[aria-pressed=true] kbd {color:var(--high);border-color:var(--high)}
 
 .latch-mode #init{grid-column:auto;grid-row:auto;justify-self:stretch}
 @media(max-width:650px){.latch-mode #init{grid-column:1/-1;grid-row:2}}
+
+.history-actions{display:grid;gap:8px;align-self:center}
+.history-actions button{font-size:.875rem}
+.controls .history-actions #init{grid-column:auto;grid-row:auto;justify-self:stretch}
+@media(max-width:1120px){.history-actions{grid-column:2;grid-row:2}.latch-mode .history-actions{grid-column:3;grid-row:1}}
+@media(max-width:650px){.history-actions{grid-column:1/-1;grid-row:3;grid-template-columns:1fr 1fr}.latch-mode .history-actions{grid-column:1/-1;grid-row:2}}

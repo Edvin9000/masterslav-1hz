@@ -40,3 +40,5 @@ Shortcuts ignore key repeat, text entry, and Ctrl/Alt/Command combinations. Manu
 ## Lab tabs
 
 Tab 1 is a four-NAND gated D-latch with D/E/Q history and a live truth table. D toggles data; E toggles enable. No inverter or automatic clock is shown. Tab 2 retains the master–slave circuit (C toggles CLK, S runs one cycle, A toggles automatic clocking). Keys 1/2 select tabs. Each tab keeps its own state and history; switching tabs stops the clock. Reset affects the active tab. Direct links: #d-latch and #master-slave.
+
+N (Nästa steg) appends the current signals to history without changing circuit state. Available in both tabs; disabled during automatic clocking and a single cycle. It advances an event step, not elapsed seconds.

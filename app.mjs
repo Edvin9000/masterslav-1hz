@@ -38,11 +38,12 @@ drawHistory();}
 function drawHistory(){let t=$('timing'),w=Math.max(300,t.clientWidth),h=180;t.replaceChildren();t.setAttribute('viewBox',`0 0 ${w} ${h}`);const left=65,right=w-20,slot=(right-left)/24;const names=mode==='latch'?[['D','d'],['E','clk'],['Q','qm']]:[['D','d'],['CLK','clk'],['Qm','qm'],['Qs','qs']];const colors={1:'#ff3b30',0:'#8497ad',X:'#ffc471'};
 for(let j=0;j<names.length;j++){let y=12+j*36;t.append(el('text',{x:0,y:y+12,fill:'#b7cad8','font-size':14},names[j][0]));t.append(el('line',{x1:left,y1:y+18,x2:right,y2:y+18,stroke:'#24394b'}));history.forEach((entry,i)=>{let v=entry[names[j][1]],x=left+i*slot,yy=y+(v==='X'?9:v?0:18);t.append(el('line',{x1:x,y1:yy,x2:x+slot,y2:yy,stroke:colors[v],'stroke-width':2.5,...(v==='X'?{'stroke-dasharray':'4 3'}:{})}));if(i>0){let pv=history[i-1][names[j][1]],py=y+(pv==='X'?9:pv?0:18);if(pv!=='X'&&v!=='X'&&pv!==v)t.append(el('line',{x1:x,y1:py,x2:x,y2:yy,stroke:colors[v],'stroke-width':2}));}if(v==='X'&&slot>25)t.append(el('text',{x:x+slot/2,y:y+5,fill:colors.X,'font-size':11,'text-anchor':'middle'},'X'));});}
 const labelEvery=w<550?6:3;history.forEach((e,i)=>{if(i%labelEvery===0)t.append(el('text',{x:left+(i+.5)*slot,y:174,fill:'#a3b6c7','font-size':12,'text-anchor':'middle'},e.step));});t.append(el('text',{x:0,y:174,fill:'#a3b6c7','font-size':12},'Steg'));}
-function stop(){clockDriver.stop();automatic=false;buttonLabel('auto','▶ Automatisk klocka · 1 Hz','A');$('auto').setAttribute('aria-pressed','false');$('clock').disabled=false;$('cycle').disabled=false;}
+function stop(){clockDriver.stop();automatic=false;buttonLabel('auto','▶ Automatisk klocka · 1 Hz','A');$('auto').setAttribute('aria-pressed','false');$('clock').disabled=false;$('cycle').disabled=false;$('advance').disabled=false;}
 function init(){stop();state=initial();history=[];step=0;record();render();}
 $('data').onclick=()=>act({d:1-state.d});$('clock').onclick=()=>act({clk:1-state.clk});$('init').onclick=init;
-$('auto').onclick=()=>{if(automatic){stop();return;}stop();automatic=true;buttonLabel('auto','Ⅱ Pausa klockan · 1 Hz','A');$('auto').setAttribute('aria-pressed','true');$('clock').disabled=true;$('cycle').disabled=true;clockDriver.start();};
-$('cycle').onclick=()=>{if(clockDriver.running)return;$('clock').disabled=true;$('cycle').disabled=true;clockDriver.start(2,stop);};
+$('advance').onclick=()=>{if(clockDriver.running)return;record();drawHistory();};
+$('auto').onclick=()=>{if(automatic){stop();return;}stop();automatic=true;buttonLabel('auto','Ⅱ Pausa klockan · 1 Hz','A');$('auto').setAttribute('aria-pressed','true');$('clock').disabled=true;$('cycle').disabled=true;$('advance').disabled=true;clockDriver.start();};
+$('cycle').onclick=()=>{if(clockDriver.running)return;$('clock').disabled=true;$('cycle').disabled=true;$('advance').disabled=true;clockDriver.start(2,stop);};
 $('full').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('fullscreenError').textContent='Helskärm stöds inte här. Öppna presentationen i ett eget webbläsarfönster.';}};
 document.addEventListener('fullscreenchange',()=>{buttonLabel('full',document.fullscreenElement?'Lämna helskärm ↙':'Helskärm ↗','F');$('full').setAttribute('aria-label',document.fullscreenElement?'Lämna helskärm':'Visa i helskärm');});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});new ResizeObserver(drawHistory).observe($('timing'));
@@ -119,7 +120,7 @@ document.addEventListener('keydown',event=>{
   if(event.repeat||event.ctrlKey||event.metaKey||event.altKey||event.isComposing)return;
   const target=event.target;
   if(target?.isContentEditable||target?.closest?.('textarea,select,input'))return;
-  const controls={d:'data',...(mode==='latch'?{e:'clock'}:{c:'clock',s:'cycle',a:'auto'}),r:'init',f:'full',t:'toggleTop',b:'toggleBottom','1':'tabLatch','2':'tabMaster'};
+  const controls={d:'data',...(mode==='latch'?{e:'clock'}:{c:'clock',s:'cycle',a:'auto'}),n:'advance',r:'init',f:'full',t:'toggleTop',b:'toggleBottom','1':'tabLatch','2':'tabMaster'};
   const control=$(controls[event.key.toLowerCase()]);
   if(!control||control.disabled||control.hidden)return;
   event.preventDefault();
