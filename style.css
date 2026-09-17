@@ -44,3 +44,17 @@ button[aria-pressed=true] kbd {color:var(--high);border-color:var(--high)}
 .truth-card tr.selected td:first-child{box-shadow:inset 3px 0 var(--high)}
 @media(max-width:900px){.study-grid{grid-template-columns:1fr}}
 @media(max-width:650px){.truth-card{padding:18px 12px}.truth-card th,.truth-card td{padding:10px 5px}}
+
+[hidden]{display:none!important}
+.mode-tabs{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.mode-tabs button{color:var(--muted)}
+.mode-tabs [aria-current=page]{color:var(--high);border-color:var(--high);background:#102637}
+#pageTitle{font:inherit;color:inherit;letter-spacing:inherit;margin:0}
+.latch-mode .controls{grid-template-columns:1fr 1fr 1fr}
+.latch-mode #circuit{min-width:560px;max-width:800px;margin:auto}
+#latchTable{max-width:900px;margin-top:20px}
+#latchNotes{color:var(--muted);font-size:.875rem;line-height:1.65;max-width:900px}
+@media(max-width:650px){.latch-mode .controls{grid-template-columns:1fr 1fr}.latch-mode #init{grid-row:2}.mode-tabs button{flex:1}}
+
+.latch-mode #init{grid-column:auto;grid-row:auto;justify-self:stretch}
+@media(max-width:650px){.latch-mode #init{grid-column:1/-1;grid-row:2}}
